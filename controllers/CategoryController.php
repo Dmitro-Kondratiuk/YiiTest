@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\services\CategoryService;
 use Yii;
 use app\models\Category;
 use yii\filters\AccessControl;
@@ -11,6 +12,8 @@ use yii\data\ActiveDataProvider;
 
 class CategoryController extends Controller
 {
+    private CategoryService $CategoryService;
+
     public function behaviors() {
         return [
             'access' => [
@@ -24,6 +27,11 @@ class CategoryController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function __construct($id, $module, $config = []) {
+        $this->CategoryService = new CategoryService();
+        parent::__construct($id, $module, $config);
     }
 
     /**
@@ -49,19 +57,17 @@ class CategoryController extends Controller
      * @return mixed
      */
     public function actionCreate() {
-        $model = new Category();
+        $response = $this->CategoryService->createCategory();
+        if (isset($response['status']) && $response['status'] == 'success') {
+            Yii::$app->session->setFlash($response['status'], $response['message']);
 
-        if ($model->load(Yii::$app->request->post())) {
-            if ($model->save()) {
-                Yii::$app->session->setFlash('success', 'Category created successfully.');
-
-                return $this->redirect(['index']);
-            }
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
-            'model' => $model,
+            'model' => $response['model'],
         ]);
+
     }
 
     /**
@@ -73,7 +79,7 @@ class CategoryController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id) {
-        $category = $this->findModel($id);
+        $category = $this->CategoryService->categoryFindOne($id);
 
         if ($category === null) {
             Yii::$app->session->setFlash('error', 'The requested blog post does not exist.');
@@ -97,18 +103,17 @@ class CategoryController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id) {
-        $model = $this->findModel($id);
+        $response = $this->CategoryService->updateCategory($id);
 
-        if ($model->load(Yii::$app->request->post())) {
-            if ($model->save()) {
-                Yii::$app->session->setFlash('success', 'Category updated successfully.');
+        if (isset($response['status']) && $response['status'] == 'success') {
+            Yii::$app->session->setFlash('success', 'Category updated successfully.');
 
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
+            return $this->redirect(['view', 'id' => $response['category_id']]);
         }
 
+
         return $this->render('update', [
-            'model' => $model,
+            'model' => $response['model'],
         ]);
     }
 
@@ -122,26 +127,12 @@ class CategoryController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id) {
-        $this->findModel($id)->delete();
+        $this->CategoryService->deletePost($id);
 
         Yii::$app->session->setFlash('success', 'Category deleted successfully.');
 
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the Category model based on its primary key value.
-     *
-     * @param int $id
-     *
-     * @return Category the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id) {
-        if (($model = Category::findOne($id)) !== null) {
-            return $model;
-        }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
-    }
 }

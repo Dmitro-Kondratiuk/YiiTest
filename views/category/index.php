@@ -26,13 +26,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{view} {update} {delete}',
             ],
-            'pager' => [
-                'class' => 'yii\widgets\LinkPager',
-                'options' => ['class' => 'pagination'],
-                'linkOptions' => ['class' => 'page-link'],
-                'activePageCssClass' => 'active',
-                'disabledPageCssClass' => 'disabled',
-            ],
+        ],
+        'pager' => [
+            'class' => 'yii\widgets\LinkPager',
+            'options' => ['class' => 'pagination'],
+            'linkOptions' => ['class' => 'page-link'],
+            'activePageCssClass' => 'active',
+            'disabledPageCssClass' => 'disabled',
         ],
     ]); ?>
 
