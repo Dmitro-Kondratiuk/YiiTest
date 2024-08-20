@@ -3,7 +3,6 @@
 namespace app\services;
 
 use app\models\Category;
-use app\models\Post;
 use Yii;
 
 class CategoryService
