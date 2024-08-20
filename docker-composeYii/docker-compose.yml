@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: yii2_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ../logs:/var/log/nginx
+      - ../:/var/www/html
+    depends_on:
+      - php
+    networks:
+      - yii2-network
+
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: yii2_php
+    volumes:
+      - ../:/var/www/html
+    working_dir: /var/www/html
+    networks:
+      - yii2-network
+
+  mysql:
+    image: mysql:8
+    platform: linux/arm64/v8
+    container_name: yii2_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: yii2
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3309:3306"
+    networks:
+      - yii2-network
+
+networks:
+  yii2-network:
+    driver: bridge
+
+volumes:
+  db_data:
