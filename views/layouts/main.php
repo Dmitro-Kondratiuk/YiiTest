@@ -19,6 +19,8 @@ $this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, 
 $this->registerMetaTag(['name' => 'description', 'content' => $this->params['meta_description'] ?? '']);
 $this->registerMetaTag(['name' => 'keywords', 'content' => $this->params['meta_keywords'] ?? '']);
 $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii::getAlias('@web/favicon.ico')]);
+echo Html::cssFile('@web/css/site.css?v=1.0');
+echo Html::jsFile('@web/js/jquery.js?v=1.0');
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

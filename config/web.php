@@ -50,6 +50,7 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '' => 'blogs/index',
                 'blogs/create' => 'blogs/create',
                 'blogs/update/<id:\d+>' => 'blogs/update',
                 'blogs/view/<id:\d+>' => 'blogs/view',
