@@ -37,7 +37,7 @@ class LogParserController extends Controller
         if ($handle) {
             fseek($handle, $position);
 
-            $batchSize = 1000; // Количество строк для одной вставки
+            $batchSize = 1000;
             $logs      = [];
 
             while (($line = fgets($handle)) !== false) {
