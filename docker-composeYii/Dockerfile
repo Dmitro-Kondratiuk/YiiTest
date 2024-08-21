@@ -7,6 +7,7 @@ RUN apt-get update && \
     libfreetype6-dev \
     libmariadb-dev \
     libsqlite3-dev \
+    git\
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd \
     && docker-php-ext-install pdo pdo_mysql \

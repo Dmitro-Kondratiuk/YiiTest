@@ -16,13 +16,13 @@ class m240820_125809_create_nginx_logs_table extends Migration
             'request_url'    => $this->string(2083),
             'response_code'  => $this->integer(),
             'response_size'  => $this->integer(),
-            'referer'        => $this->string(2083)->null(),
-            'user_agent'     => $this->string(2083)->null(),
+            'referer'        => $this->text()->null(),
+            'user_agent'     => $this->text()->null(),
         ]);
 
     }
 
-    public function safeDown() {
+    public function down() {
         $this->dropTable('nginx_logs');
     }
 }
